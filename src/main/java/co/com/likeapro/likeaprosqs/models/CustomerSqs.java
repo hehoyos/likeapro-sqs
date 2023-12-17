@@ -2,7 +2,7 @@ package co.com.likeapro.likeaprosqs.models;
 
 import java.time.LocalDateTime;
 
-public record Customer (
+public record CustomerSqs(
     Long id,
     String name,
     String email,
