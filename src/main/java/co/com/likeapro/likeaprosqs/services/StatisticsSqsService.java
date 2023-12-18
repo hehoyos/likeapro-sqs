@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @AllArgsConstructor
 @Service
@@ -26,11 +27,6 @@ public class StatisticsSqsService {
 
         Map<String, MessageAttributeValue> messageAttributes = new HashMap<>();
 
-        messageAttributes.put("id",
-                new MessageAttributeValue()
-                        .withStringValue(Optional.ofNullable(statisticsSqs.id()).orElse(0L).toString())
-                        .withDataType(DATA_TYPE)
-        );
         messageAttributes.put("timestamp",
                 new MessageAttributeValue()
                         .withStringValue(statisticsSqs.timestamp().toString())
@@ -46,20 +42,10 @@ public class StatisticsSqsService {
                         .withStringValue(Optional.ofNullable(statisticsSqs.data()).orElse(0L).toString())
                         .withDataType(DATA_TYPE)
         );
-        messageAttributes.put("createdAt",
-                new MessageAttributeValue()
-                        .withStringValue(statisticsSqs.createdAt().toString())
-                        .withDataType(DATA_TYPE)
-        );
-        messageAttributes.put("updatedAt",
-                new MessageAttributeValue()
-                        .withStringValue(statisticsSqs.updatedAt().toString())
-                        .withDataType(DATA_TYPE)
-        );
 
         SendMessageRequest sendMessageRequest = new SendMessageRequest()
                 .withQueueUrl(this.getQueueUrl())
-                .withMessageBody(Optional.ofNullable(statisticsSqs.id()).orElse(0L).toString())
+                .withMessageBody(UUID.randomUUID().toString())
                 .withDelaySeconds(delaySeconds)
                 .withMessageAttributes(messageAttributes);
 

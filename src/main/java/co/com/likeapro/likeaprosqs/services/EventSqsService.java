@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @AllArgsConstructor
 @Service
@@ -26,11 +27,6 @@ public class EventSqsService {
 
         Map<String, MessageAttributeValue> messageAttributes = new HashMap<>();
 
-        messageAttributes.put("id",
-                new MessageAttributeValue()
-                        .withStringValue(Optional.ofNullable(eventSqs.id()).orElse(0L).toString())
-                        .withDataType(DATA_TYPE)
-        );
         messageAttributes.put("name",
                 new MessageAttributeValue()
                         .withStringValue(eventSqs.name())
@@ -56,20 +52,10 @@ public class EventSqsService {
                         .withStringValue(eventSqs.customers())
                         .withDataType(DATA_TYPE)
         );
-        messageAttributes.put("createdAt",
-                new MessageAttributeValue()
-                        .withStringValue(eventSqs.createdAt().toString())
-                        .withDataType(DATA_TYPE)
-        );
-        messageAttributes.put("updatedAt",
-                new MessageAttributeValue()
-                        .withStringValue(eventSqs.updatedAt().toString())
-                        .withDataType(DATA_TYPE)
-        );
 
         SendMessageRequest sendMessageRequest = new SendMessageRequest()
                 .withQueueUrl(this.getQueueUrl())
-                .withMessageBody(eventSqs.name())
+                .withMessageBody(UUID.randomUUID().toString())
                 .withDelaySeconds(delaySeconds)
                 .withMessageAttributes(messageAttributes);
 

@@ -20,7 +20,7 @@ public class AwsConfig {
     private String serviceEndpoint;
 
     @Bean
-    public AmazonSQS sqsConfig(){
+    public AmazonSQS sqsConfig() {
         return AmazonSQSClientBuilder
                 .standard()
                 .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(serviceEndpoint, null))
